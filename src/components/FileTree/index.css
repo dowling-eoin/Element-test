@@ -1,0 +1,6 @@
+.FileTree {
+  display: flex;
+  width: 400px;
+  background-color: #eaebeb;
+  padding: 16px;
+}
