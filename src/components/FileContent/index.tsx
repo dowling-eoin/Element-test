@@ -1,13 +1,30 @@
 import React from "react";
 import "./index.css";
 
-type Props = {};
+interface Props {
+  content: Array<{
+    path: string;
+    content: string;
+  }>;
+  selected: string;
+}
 
-const FileContent: React.FC<Props> = (_) => {
+
+
+const FileContent: React.FC<Props> = ({ content, selected }) => {
+    const showContent = (selected) => {
+        let selectedContent;
+       content.forEach((content)=>{
+           if(content.path === selected){
+               selectedContent = content.content;
+           }
+       });
+       console.log(selectedContent);
+        return selectedContent;
+    };
   return (
     <div className="FileContent">
-      Implement your FileContent component here. This component should present
-      the content of the file that was selected from the file tree.
+        <p>{showContent(selected)}</p>
     </div>
   );
 };

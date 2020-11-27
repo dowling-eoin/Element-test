@@ -3,4 +3,5 @@
   width: 400px;
   background-color: #eaebeb;
   padding: 16px;
+  flex-direction: column;
 }
