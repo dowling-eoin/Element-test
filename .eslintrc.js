@@ -20,5 +20,6 @@ module.exports = {
   plugins: ["react", "@typescript-eslint", "prettier"],
   rules: {
     "prettier/prettier": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
   },
 };

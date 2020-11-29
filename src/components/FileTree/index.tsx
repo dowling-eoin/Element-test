@@ -1,46 +1,54 @@
 import React from "react";
 import "./index.css";
 
+type files = Array<{
+  path: string;
+  name: string;
+  children: files;
+}>;
+
 interface Props {
   files: Array<{
     path: string;
-    content: number;
-    createdAt: string;
-    updatedAt: string;
+    name: string;
+    children: files;
   }>;
-  handleSelection: (path: string) => void;
+  handleFileSelect: (path: string) => void;
 }
 
-class FileTree extends React.Component {
-  constructor(Props) {
+class FileTree extends React.Component<Props> {
+  constructor(Props: Props) {
     super(Props);
-    this.state = {
-      //  tree: [],
-    };
   }
 
-
-
-  renderChildrenRecursively = (children) => {
+  renderFileTreeRecursively = (children: files) => {
     return children.map((child, index) => (
       <ul key={index}>
-        <li key={child.name} onClick={()=>this.props.handleSelection(child.path)}>{child.name}</li>
-        {child.children < 1
+        <li
+          key={child.name}
+          onClick={() => this.props.handleFileSelect(child.path)}
+        >
+          {child.name}
+        </li>
+        {child.children.length < 1
           ? null
-          : this.renderChildrenRecursively(child.children)}
+          : this.renderFileTreeRecursively(child.children)}
       </ul>
     ));
   };
 
-
   render() {
     return (
       <div className="FileTree">
-        Implement your FileTree component here.
         {this.props.files.map((branch, index) => (
           <ul key={index}>
-            <li key={branch.name} onClick={()=>this.props.handleSelection(branch.path)}>{branch.name}</li>
-            {this.renderChildrenRecursively(branch.children)}
+            <li
+              key={branch.name}
+              onClick={() => this.props.handleFileSelect(branch.path)}
+            >
+              {branch.name}
+            </li>
+            {this.renderFileTreeRecursively(branch.children)}
           </ul>
         ))}
       </div>

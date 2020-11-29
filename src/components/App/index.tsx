@@ -4,86 +4,118 @@ import FileTree from "../FileTree";
 import FileContent from "../FileContent";
 import fileFixtures from "../../fixtures/files.json";
 
-interface Props {
-  file: string;
+interface IProps {
+  [n: string]: never;
 }
 
-class App extends React.Component {
-  constructor(Props) {
+interface IState {
+  fileTree: Array<{
+    path: string;
+    name: string;
+    children: IState["fileTree"];
+  }>;
+  content: Array<{
+    path: string;
+    content: string;
+  }>;
+  selected: string;
+}
+
+type TreeFiles = Array<{
+  path: string;
+  name: string;
+  children: TreeFiles;
+}>;
+
+type files = Array<{
+  path: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}>;
+
+type content = Array<{
+  path: string;
+  content: string;
+}>;
+
+class App extends React.Component<IProps, IState> {
+  constructor(Props: IProps) {
     super(Props);
     this.state = {
-      tree: [],
+      fileTree: [],
       content: [],
       selected: "",
     };
   }
-    handleSelection = (path) => {
-        console.log(path);
-        this.setState({ selected: path });
-        // eventBus.dispatch("itemSelected", { message: "item selected" });
-    };
 
-  //const App: React.FC<Props> = () => {
+  handleFileSelect = (path: string) => {
+    this.setState({ selected: path });
+    return;
+  };
+
   // console.log("The file fixtures are here!", fileFixtures);
-  checker = (files) => {
-    let paths = [];
-    let tree = {};
+  createFileTree = (files: files) => {
+    const paths: string[] = [];
+    let fileTree: TreeFiles = [];
 
-    files.forEach((file, index) => {
-      const path = file.path;
-      paths.push(path);
+    files.forEach((file) => {
+      paths.push(file.path);
     });
 
     // Insert path into directory tree structure:
-    const insert = (pathIndex, children = [], [head, ...tail]) => {
-       // let fullPath = [head, ...tail];
+    const insert = (
+      pathIndex: number,
+      children: TreeFiles = [],
+      [head, ...tail]: string[]
+    ) => {
       let child = children.find((child) => child.name === head);
-      if (!child) children.push((child = { path: paths[pathIndex], name: head, children: [] }));
+      if (!child)
+        children.push(
+          (child = { path: paths[pathIndex], name: head, children: [] })
+        );
       if (tail.length > 0) insert(pathIndex, child.children, tail);
       return children;
     };
 
-    //const fullPaths = paths;
-      //let bink;
-    tree = paths
-      .map((path) => {let bink = path; return path.split("/").slice(1)})
-      .reduce((children, path, index) => insert(index, children, path), []);
+    fileTree = paths
+      .map((path) => path.split("/").slice(1))
+      .reduce(
+        (children: TreeFiles, path, index) => insert(index, children, path),
+        []
+      );
 
-    const addPath = (tree) => {
-       // console.log(tree);
-        let path = [];
-        tree.forEach((branch)=> {
-            if (branch.children.length > 0) {
-                path.push(branch.name);
-                addPath(branch.children);
-            }else{
-              //  console.log(path);
-                path.push(branch.name);
-            }
-        });
+    const addPath = (fileTree: TreeFiles) => {
+      const path = [];
+      fileTree.forEach((branch) => {
+        if (branch.children.length > 0) {
+          path.push(branch.name);
+          addPath(branch.children);
+        } else {
+          path.push(branch.name);
+        }
+      });
     };
 
-   addPath(tree);
-    console.log(tree);
+    addPath(fileTree);
 
-    this.setState({ tree: tree });
+    //Add File Tree object to local state
+    this.setState({ fileTree: fileTree });
   };
 
-  getContent = (files) => {
-    const content = [];
+  getFileContent = (files: files) => {
+    const content: content = [];
 
-    files.forEach((file, index) => {
+    files.forEach((file) => {
       content.push({ path: file.path, content: file.content });
     });
-
-    console.log(content);
 
     this.setState({ content: content });
   };
 
   componentDidMount() {
-    this.checker(fileFixtures);
-    this.getContent(fileFixtures);
+    this.createFileTree(fileFixtures);
+    this.getFileContent(fileFixtures);
   }
 
   render() {
@@ -91,8 +123,14 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">ElementAI Frontend Challenge</header>
         <div className="App-content">
-          <FileTree files={this.state.tree} handleSelection={this.handleSelection}/>
-          <FileContent content={this.state.content} selected={this.state.selected}/>
+          <FileTree
+            files={this.state.fileTree}
+            handleFileSelect={this.handleFileSelect}
+          />
+          <FileContent
+            fileContent={this.state.content}
+            selected={this.state.selected}
+          />
         </div>
       </div>
     );

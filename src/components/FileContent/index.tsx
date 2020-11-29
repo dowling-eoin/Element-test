@@ -2,29 +2,27 @@ import React from "react";
 import "./index.css";
 
 interface Props {
-  content: Array<{
+  fileContent: Array<{
     path: string;
     content: string;
   }>;
   selected: string;
 }
 
+const FileContent: React.FC<Props> = ({ fileContent, selected }: Props) => {
+  const showContent = (selected) => {
+    let selectedContent;
+    fileContent.forEach((fileContent) => {
+      if (fileContent.path === selected) {
+        selectedContent = fileContent.content;
+      }
+    });
+    return selectedContent;
+  };
 
-
-const FileContent: React.FC<Props> = ({ content, selected }) => {
-    const showContent = (selected) => {
-        let selectedContent;
-       content.forEach((content)=>{
-           if(content.path === selected){
-               selectedContent = content.content;
-           }
-       });
-       console.log(selectedContent);
-        return selectedContent;
-    };
   return (
     <div className="FileContent">
-        <p>{showContent(selected)}</p>
+      <p>{showContent(selected)}</p>
     </div>
   );
 };
