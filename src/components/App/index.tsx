@@ -3,6 +3,7 @@ import "./index.css";
 import FileTree from "../FileTree";
 import FileContent from "../FileContent";
 import fileFixtures from "../../fixtures/files.json";
+import { TreeList, Files, Content } from "../../typings";
 
 interface IProps {
   [n: string]: never;
@@ -21,24 +22,6 @@ interface IState {
   selected: string;
 }
 
-type TreeFiles = Array<{
-  path: string;
-  name: string;
-  children: TreeFiles;
-}>;
-
-type files = Array<{
-  path: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}>;
-
-type content = Array<{
-  path: string;
-  content: string;
-}>;
-
 class App extends React.Component<IProps, IState> {
   constructor(Props: IProps) {
     super(Props);
@@ -55,9 +38,9 @@ class App extends React.Component<IProps, IState> {
   };
 
   // console.log("The file fixtures are here!", fileFixtures);
-  createFileTree = (files: files) => {
+  createFileTree = (files: Files) => {
     const paths: string[] = [];
-    let fileTree: TreeFiles = [];
+    let fileTree: TreeList = [];
 
     files.forEach((file) => {
       paths.push(file.path);
@@ -66,7 +49,7 @@ class App extends React.Component<IProps, IState> {
     // Insert path into directory tree structure:
     const insert = (
       pathIndex: number,
-      children: TreeFiles = [],
+      children: TreeList = [],
       [head, ...tail]: string[]
     ) => {
       let child = children.find((child) => child.name === head);
@@ -81,11 +64,11 @@ class App extends React.Component<IProps, IState> {
     fileTree = paths
       .map((path) => path.split("/").slice(1))
       .reduce(
-        (children: TreeFiles, path, index) => insert(index, children, path),
+        (children: TreeList, path, index) => insert(index, children, path),
         []
       );
 
-    const addPath = (fileTree: TreeFiles) => {
+    const addPath = (fileTree: TreeList) => {
       const path = [];
       fileTree.forEach((branch) => {
         if (branch.children.length > 0) {
@@ -103,8 +86,8 @@ class App extends React.Component<IProps, IState> {
     this.setState({ fileTree: fileTree });
   };
 
-  getFileContent = (files: files) => {
-    const content: content = [];
+  getFileContent = (files: Files) => {
+    const content: Content = [];
 
     files.forEach((file) => {
       content.push({ path: file.path, content: file.content });

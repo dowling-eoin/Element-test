@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 
-interface Props {
+interface IProps {
   fileContent: Array<{
     path: string;
     content: string;
@@ -9,8 +9,8 @@ interface Props {
   selected: string;
 }
 
-const FileContent: React.FC<Props> = ({ fileContent, selected }: Props) => {
-  const showContent = (selected) => {
+const FileContent: React.FC<IProps> = ({ fileContent, selected }: IProps) => {
+  const showContent = (selected: IProps["selected"]) => {
     let selectedContent;
     fileContent.forEach((fileContent) => {
       if (fileContent.path === selected) {

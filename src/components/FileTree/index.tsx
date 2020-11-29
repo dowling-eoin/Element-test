@@ -1,27 +1,23 @@
 import React from "react";
 import "./index.css";
+import {TreeList} from "../../typings";
 
-type files = Array<{
-  path: string;
-  name: string;
-  children: files;
-}>;
 
-interface Props {
+interface IProps {
   files: Array<{
     path: string;
     name: string;
-    children: files;
+    children: TreeList;
   }>;
   handleFileSelect: (path: string) => void;
 }
 
-class FileTree extends React.Component<Props> {
-  constructor(Props: Props) {
+class FileTree extends React.Component<IProps> {
+  constructor(Props: IProps) {
     super(Props);
   }
 
-  renderFileTreeRecursively = (children: files) => {
+  renderFileTreeRecursively = (children: TreeList) => {
     return children.map((child, index) => (
       <ul key={index}>
         <li
