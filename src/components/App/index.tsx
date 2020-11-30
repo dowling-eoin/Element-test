@@ -37,16 +37,16 @@ class App extends React.Component<IProps, IState> {
     return;
   };
 
-  // console.log("The file fixtures are here!", fileFixtures);
+  // Create file tree object from the paths in the JSON file
   createFileTree = (files: Files) => {
     const paths: string[] = [];
-    // let fileTree: TreeList = [];
 
+    // Store the path strings from JSON file in array 'paths'
     files.forEach((file) => {
       paths.push(file.path);
     });
 
-    // Insert path into directory tree structure:
+    // Insert the paths into a directory tree structure
     const insert = (
       pathIndex: number,
       children: TreeList = [],
@@ -57,10 +57,12 @@ class App extends React.Component<IProps, IState> {
         children.push(
           (child = { path: paths[pathIndex], name: head, children: [] })
         );
+      // Run recursively as long as the directory has children
       if (tail.length > 0) insert(pathIndex, child.children, tail);
       return children;
     };
 
+    // Assign the directory tree object to fileTree variable
     const fileTree = paths
       .map((path) => path.split("/").slice(1))
       .reduce(
@@ -68,6 +70,8 @@ class App extends React.Component<IProps, IState> {
         []
       );
 
+    // Insert the full directory path from the JSON file as a property on each file in the tree
+    // This will allow us to check for the right content later
     const addPath = (fileTree: TreeList) => {
       const path = [];
       fileTree.forEach((branch) => {
@@ -89,10 +93,11 @@ class App extends React.Component<IProps, IState> {
   getFileContent = (files: Files) => {
     const content: Content = [];
 
+    // Make a separate object of each files' content. Include the directory path so that the content can be matched with the right file name later
     files.forEach((file) => {
       content.push({ path: file.path, content: file.content });
     });
-
+    // Add content object to local state
     this.setState({ content: content });
   };
 
