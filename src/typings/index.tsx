@@ -1,21 +1,21 @@
-type TypeTreeList = Array<{
+type TreeListType = Array<{
   path: string;
   name: string;
-  children: TypeTreeList;
+  children: TreeListType;
 }>;
 
-type TypeFiles = Array<{
+type FilesType = Array<{
   path: string;
   content: string;
   createdAt: string;
   updatedAt: string;
 }>;
 
-type TypeContent = Array<{
+type ContentType = Array<{
   path: string;
   content: string;
 }>;
 
-export type TreeList = TypeTreeList;
-export type Files = TypeFiles;
-export type Content = TypeContent;
+export type TreeList = TreeListType;
+export type Files = FilesType;
+export type Content = ContentType;

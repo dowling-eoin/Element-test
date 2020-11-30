@@ -40,7 +40,7 @@ class App extends React.Component<IProps, IState> {
   // console.log("The file fixtures are here!", fileFixtures);
   createFileTree = (files: Files) => {
     const paths: string[] = [];
-    let fileTree: TreeList = [];
+    // let fileTree: TreeList = [];
 
     files.forEach((file) => {
       paths.push(file.path);
@@ -61,7 +61,7 @@ class App extends React.Component<IProps, IState> {
       return children;
     };
 
-    fileTree = paths
+    const fileTree = paths
       .map((path) => path.split("/").slice(1))
       .reduce(
         (children: TreeList, path, index) => insert(index, children, path),

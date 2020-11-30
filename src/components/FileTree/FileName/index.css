@@ -1,0 +1,7 @@
+.FileName {
+  display: flex;
+  background-color: dodgerblue;
+  padding: 0px 50px 0px 50px;
+  flex-direction: column;
+  width: fit-content;
+}

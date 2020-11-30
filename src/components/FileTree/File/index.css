@@ -1,0 +1,7 @@
+.File {
+  display: flex;
+  background-color: white;
+  padding: 0px 50px 0px 50px;
+  flex-direction: column;
+  width: fit-content;
+}

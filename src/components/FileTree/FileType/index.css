@@ -1,0 +1,11 @@
+.FileType {
+  background-color: sandybrown;
+  width: fit-content;
+  padding: 0px 20px 0px 30px;
+}
+
+.FileTypeHeader {
+  background-color: brown;
+  width: fit-content;
+  padding: 0px 20px 0px 30px;
+}

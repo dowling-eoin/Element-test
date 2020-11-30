@@ -1,7 +1,8 @@
 import React from "react";
 import "./index.css";
-import {TreeList} from "../../typings";
-
+import { TreeList } from "../../typings";
+import FileType from "./FileType";
+import FileName from "./FileName";
 
 interface IProps {
   files: Array<{
@@ -17,35 +18,25 @@ class FileTree extends React.Component<IProps> {
     super(Props);
   }
 
-  renderFileTreeRecursively = (children: TreeList) => {
-    return children.map((child, index) => (
-      <ul key={index}>
-        <li
-          key={child.name}
-          onClick={() => this.props.handleFileSelect(child.path)}
-        >
-          {child.name}
-        </li>
-        {child.children.length < 1
-          ? null
-          : this.renderFileTreeRecursively(child.children)}
-      </ul>
-    ));
-  };
-
   render() {
     return (
       <div className="FileTree">
-        {this.props.files.map((branch, index) => (
-          <ul key={index}>
-            <li
-              key={branch.name}
-              onClick={() => this.props.handleFileSelect(branch.path)}
-            >
-              {branch.name}
-            </li>
-            {this.renderFileTreeRecursively(branch.children)}
-          </ul>
+        {this.props.files.map((fileType, index) => (
+          <div key={index}>
+            <FileName
+              key={fileType.name}
+              name={fileType.name}
+              path={fileType.path}
+              handleFileSelect={this.props.handleFileSelect}
+            />
+            <FileType
+              key={fileType.path}
+              name={fileType.name}
+              path={fileType.path}
+              files={fileType.children}
+              handleFileSelect={this.props.handleFileSelect}
+            />
+          </div>
         ))}
       </div>
     );
